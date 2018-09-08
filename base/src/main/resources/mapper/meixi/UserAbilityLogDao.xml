@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.UserAbilityLogDao">
+
+    <sql id="tuserAbilityLogColumns">
+        t.id,
+        t.user_id,
+        t.type,
+        t.curr_value,
+        t.sum_value,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tuserAbilityLogWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tuserAbilityLogJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.UserAbilityLog">
+        SELECT <include refid="tuserAbilityLogColumns"/> FROM t_user_ability_log t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.UserAbilityLog">
+        SELECT <include refid="tuserAbilityLogColumns"/> FROM t_user_ability_log t <include refid="tuserAbilityLogJoins"/>
+        WHERE <include refid="tuserAbilityLogWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_user_ability_log t WHERE <include refid="tuserAbilityLogWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.UserAbilityLog">
+        INSERT INTO t_user_ability_log (
+        id,
+        user_id,
+        type,
+        curr_value,
+        sum_value,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{userId},
+        #{type},
+        #{currValue},
+        #{sumValue},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_user_ability_log SET
+        user_id = #{userId},
+        type = #{type},
+        curr_value = #{currValue},
+        sum_value = #{sumValue},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_user_ability_log SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>

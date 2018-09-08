@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.QuestionDao">
+
+    <sql id="tquestionColumns">
+        t.id,
+        t.title,
+        t.answer,
+        t.sort,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tquestionWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tquestionJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.Question">
+        SELECT <include refid="tquestionColumns"/> FROM t_question t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.Question">
+        SELECT <include refid="tquestionColumns"/> FROM t_question t <include refid="tquestionJoins"/>
+        WHERE <include refid="tquestionWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_question t WHERE <include refid="tquestionWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.Question">
+        INSERT INTO t_question (
+        id,
+        title,
+        answer,
+        sort,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{title},
+        #{answer},
+        #{sort},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_question SET
+        title = #{title},
+        answer = #{answer},
+        sort = #{sort},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_question SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>

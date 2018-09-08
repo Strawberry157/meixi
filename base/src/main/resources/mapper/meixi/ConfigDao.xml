@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.ConfigDao">
+
+    <sql id="tconfigColumns">
+        t.id,
+        t.name,
+        t.value,
+        t.remark,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tconfigWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tconfigJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.Config">
+        SELECT <include refid="tconfigColumns"/> FROM t_config t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.Config">
+        SELECT <include refid="tconfigColumns"/> FROM t_config t <include refid="tconfigJoins"/>
+        WHERE <include refid="tconfigWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_config t WHERE <include refid="tconfigWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.Config">
+        INSERT INTO t_config (
+        id,
+        name,
+        value,
+        remark,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{name},
+        #{value},
+        #{remark},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_config SET
+        name = #{name},
+        value = #{value},
+        remark = #{remark},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_config SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.UserPointDao">
+
+    <sql id="tuserPointColumns">
+        t.id,
+        t.user_id,
+        t.points,
+        t.incr_multi,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tuserPointWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tuserPointJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.UserPoint">
+        SELECT <include refid="tuserPointColumns"/> FROM t_user_point t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.UserPoint">
+        SELECT <include refid="tuserPointColumns"/> FROM t_user_point t <include refid="tuserPointJoins"/>
+        WHERE <include refid="tuserPointWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_user_point t WHERE <include refid="tuserPointWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.UserPoint">
+        INSERT INTO t_user_point (
+        id,
+        user_id,
+        points,
+        incr_multi,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{userId},
+        #{points},
+        #{incrMulti},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_user_point SET
+        user_id = #{userId},
+        points = #{points},
+        incr_multi = #{incrMulti},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_user_point SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+
+    <!--extra-->
+
+    <select id="getByUserId" resultType="com.huanke.iot.base.po.UserPoint">
+        SELECT <include refid="tuserPointColumns"/> FROM t_user_point t
+        WHERE t.user_id = #{userId}
+        AND t.is_delete = 0
+        limit 1;
+    </select>
+</mapper>

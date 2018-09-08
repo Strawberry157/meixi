@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.huanke.iot.base.dao.meixi.AdminDao">
+
+    <sql id="tadminColumns">
+        t.id,
+        t.nickname,
+        t.password,
+        t.create_time,
+        t.update_time,
+        t.last_login_time,
+        t.last_login_ip,
+        t.is_delete
+    </sql>
+
+    <sql id="tadminWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tadminJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.Admin">
+        SELECT <include refid="tadminColumns"/> FROM t_admin t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.Admin">
+        SELECT <include refid="tadminColumns"/> FROM t_admin t <include refid="tadminJoins"/>
+        WHERE <include refid="tadminWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_admin t WHERE <include refid="tadminWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.Admin">
+        INSERT INTO t_admin (
+        id,
+        nickname,
+        password,
+        create_time,
+        last_login_time,
+        last_login_ip,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{nickname},
+        #{password},
+        #{createTime},
+        #{lastLoginTime},
+        #{lastLoginIp},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_admin SET
+        nickname = #{nickname},
+        password = #{password},
+        last_login_time = #{lastLoginTime},
+        last_login_ip = #{lastLoginIp},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_admin SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>
+

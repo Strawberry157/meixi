@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.NewsDao">
+
+    <sql id="tnewsColumns">
+        t.id,
+        t.title,
+        t.content,
+        t.title_img,
+        t.author,
+        t.read_counts,
+        t.tip_good,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tnewsWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tnewsJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.News">
+        SELECT <include refid="tnewsColumns"/> FROM t_news t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.News">
+        SELECT <include refid="tnewsColumns"/> FROM t_news t <include refid="tnewsJoins"/>
+        WHERE <include refid="tnewsWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_news t WHERE <include refid="tnewsWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.News">
+        INSERT INTO t_news (
+        id,
+        title,
+        content,
+        title_img,
+        author,
+        read_counts,
+        tip_good,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{title},
+        #{content},
+        #{titleImg},
+        #{author},
+        #{readCounts},
+        #{tipGood},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_news SET
+        title = #{title},
+        content = #{content},
+        title_img = #{titleImg},
+        author = #{author},
+        read_counts = #{readCounts},
+        tip_good = #{tipGood},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_news SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>

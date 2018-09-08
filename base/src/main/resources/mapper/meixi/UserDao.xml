@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.UserDao">
+
+    <sql id="tuserColumns">
+        t.id,
+        t.nickname,
+        t.mobile,
+        t.sex,
+        t.age,
+        t.head_img,
+        t.bg_img,
+        t.email,
+        t.level_type,
+        t.birth_date,
+        t.create_time,
+        t.update_time,
+        t.last_login_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tuserWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tuserJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.User">
+        SELECT <include refid="tuserColumns"/> FROM t_user t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.User">
+        SELECT <include refid="tuserColumns"/> FROM t_user t <include refid="tuserJoins"/>
+        WHERE <include refid="tuserWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_user t WHERE <include refid="tuserWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.User">
+        INSERT INTO t_user (
+        id,
+        nickname,
+        mobile,
+        sex,
+        age,
+        head_img,
+        bg_img,
+        email,
+        level_type,
+        skin_type,
+        birth_date,
+        create_time,
+        last_login_time,
+        last_login_ip,
+        is_init,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{nickname},
+        #{mobile},
+        #{sex},
+        #{age},
+        #{headImg},
+        #{bgImg},
+        #{email},
+        #{levelType},
+        #{skinType},
+        #{birthDate},
+        #{createTime},
+        #{lastLoginTime},
+        #{lastLoginIp},
+        #{isInit},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.huanke.iot.base.po.User">
+        UPDATE t_user SET
+        nickname = #{nickname},
+        mobile = #{mobile},
+        sex = #{sex},
+        age = #{age},
+        head_img = #{headImg},
+        bg_img = #{bgImg},
+        email = #{email},
+        level_type = #{levelType},
+        skin_type = #{skinType},
+        birth_date = #{birthDate},
+        last_login_time = #{lastLoginTime},
+        last_login_ip = #{lastLoginIp},
+        is_init = #{isInit},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_user SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+
+
+    <update id="updateByUser">
+        UPDATE t_user SET
+        nickname = #{user.nickname},
+        mobile = #{user.mobile},
+        sex = #{user.sex},
+        age = #{user.age},
+        head_img = #{user.headImg},
+        bg_img = #{user.bgImg},
+        points = #{user.points},
+        email = #{user.email},
+        level_type = #{user.levelType},
+        skin_type = #{user.skinType},
+        birth_date = #{user.birthDate},
+        last_login_time = #{user.lastLoginTime},
+        last_login_ip = #{user.lastLoginIp},
+        is_init = #{user.isInit},
+        is_delete = #{user.isDelete}
+        WHERE id = #{user.id}
+    </update>
+</mapper>

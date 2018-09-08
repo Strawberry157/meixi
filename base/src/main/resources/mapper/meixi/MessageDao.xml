@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.MessageDao">
+
+    <sql id="tmessageColumns">
+        t.id,
+        t.type,
+        t.title,
+        t.content,
+        t.title_img,
+        t.is_verify,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tmessageWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tmessageJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.Message">
+        SELECT <include refid="tmessageColumns"/> FROM t_message t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.Message">
+        SELECT <include refid="tmessageColumns"/> FROM t_message t <include refid="tmessageJoins"/>
+        WHERE <include refid="tmessageWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_message t WHERE <include refid="tmessageWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.Message">
+        INSERT INTO t_message (
+        id,
+        type,
+        title,
+        content,
+        title_img,
+        is_verify,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{type},
+        #{title},
+        #{content},
+        #{titleImg},
+        #{isVerify},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_message SET
+        type = #{type},
+        title = #{title},
+        content = #{content},
+        title_img = #{titleImg},
+        is_verify = #{isVerify},
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_message SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>
