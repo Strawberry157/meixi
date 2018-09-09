@@ -64,4 +64,14 @@
     <delete id="delete">
         UPDATE t_user_ability_log SET delete_flag = 1 WHERE ID = #{id}
     </delete>
+
+    <!--extra-->
+    <select id="monthAbilityLog">
+        SELECT <include refid="tuserAbilityLogColumns"/> FROM t_user_ability_log t
+        WHERE user_id = #{userId}
+        AND <![CDATA[  and DATE_FORMAT(#{queryDate}, '%Y-%m') ==
+                        DATE_FORMAT(#{create_time}, '%Y-%m') ]]>
+        AND is_delete = 0
+        ORDER BY create_time ASC
+    </select>
 </mapper>

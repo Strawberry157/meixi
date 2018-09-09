@@ -39,7 +39,7 @@
         ) VALUES (
         #{id},
         #{userId},
-        #{faceTime},
+        #{faceTime},\
         #{createTime},
         #{isDelete}
         )
@@ -56,4 +56,24 @@
     <delete id="delete">
         UPDATE t_user_face_time SET delete_flag = 1 WHERE ID = #{id}
     </delete>
+
+    <!--extra-->
+
+    <select id="monthFaceLog">
+        SELECT <include refid="tuserFaceTimeColumns"/> FROM t_user_face_time t
+        WHERE user_id = #{userId}
+        AND <![CDATA[  and DATE_FORMAT(#{queryDate}, '%Y-%m') ==
+                        DATE_FORMAT(#{face_time}, '%Y-%m') ]]>
+        AND is_delete = 0
+        ORDER BY create_time ASC
+    </select>
+
+    <select id="monthAbilityLog">
+        SELECT <include refid="tuserAbilityLogColumns"/> FROM t_user_ability_log t
+        WHERE user_id = #{userId}
+        AND <![CDATA[  and DATE_FORMAT(#{queryDate}, '%Y-%m') ==
+                        DATE_FORMAT(#{create_time}, '%Y-%m') ]]>
+        AND is_delete = 0
+        ORDER BY create_time ASC
+    </select>
 </mapper>
