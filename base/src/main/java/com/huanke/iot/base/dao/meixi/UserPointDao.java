@@ -1,8 +1,11 @@
 package com.huanke.iot.base.dao.meixi;
 
+import com.huanke.iot.base.dao.meixi.dto.UserPointsSeqDto;
 import com.huanke.iot.base.persistence.CrudDao;
 import com.huanke.iot.base.po.UserPoint;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -13,4 +16,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserPointDao extends CrudDao<UserPoint> {
     UserPoint getByUserId(@Param("userId") Integer userId);
+
+    List<UserPointsSeqDto> getPointsSeqList();
 }

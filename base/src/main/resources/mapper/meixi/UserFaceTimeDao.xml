@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huanke.iot.base.dao.meixi.UserFaceTimeDao">
+
+    <sql id="tuserFaceTimeColumns">
+        t.id,
+        t.user_id,
+        t.face_time,
+        t.create_time,
+        t.update_time,
+        t.is_delete
+    </sql>
+
+    <sql id="tuserFaceTimeWhere">
+        t.delete_flag = #{DEL_FLAG_NORMAL}
+    </sql>
+
+    <sql id="tuserFaceTimeJoins">
+    </sql>
+
+    <select id="get" resultType="com.huanke.iot.base.po.UserFaceTime">
+        SELECT <include refid="tuserFaceTimeColumns"/> FROM t_user_face_time t WHERE id = #{id}
+    </select>
+    <select id="findList" resultType="com.huanke.iot.base.po.UserFaceTime">
+        SELECT <include refid="tuserFaceTimeColumns"/> FROM t_user_face_time t <include refid="tuserFaceTimeJoins"/>
+        WHERE <include refid="tuserFaceTimeWhere"/> ORDER BY id desc LIMIT #{start}, #{length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_user_face_time t WHERE <include refid="tuserFaceTimeWhere" />
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.huanke.iot.base.po.UserFaceTime">
+        INSERT INTO t_user_face_time (
+        id,
+        user_id,
+        face_time,
+        create_time,
+        is_delete
+        ) VALUES (
+        #{id},
+        #{userId},
+        #{faceTime},
+        #{createTime},
+        #{isDelete}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_user_face_time SET
+        user_id = #{userId},
+        face_time = #{faceTime}
+        is_delete = #{isDelete}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE t_user_face_time SET delete_flag = 1 WHERE ID = #{id}
+    </delete>
+</mapper>

@@ -69,4 +69,14 @@
         AND t.is_delete = 0
         limit 1;
     </select>
+
+    <select id="getPointsSeqList" resultType="com.huanke.iot.base.dao.meixi.dto.UserPointsSeqDto">
+        SELECT tup.points,tu.nickname,tu.head_img,tu.bg_img FROM t_user_point tup
+        LEFT JOIN t_user tu
+        ON tup.user_id = tu.id
+        where tup.is_delete = 0
+        AND tu.is_delete = 0
+        ORDER BY tup.points DESC
+        limit 50
+    </select>
 </mapper>

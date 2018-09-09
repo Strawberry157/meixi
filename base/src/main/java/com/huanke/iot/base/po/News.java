@@ -43,4 +43,9 @@ public class News extends DataEntity {
      */
     private String content;
 
+    /**
+     * 排序
+     */
+    private Integer sort;
+
 }

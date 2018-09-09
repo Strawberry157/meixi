@@ -10,6 +10,7 @@
         t.author,
         t.read_counts,
         t.tip_good,
+        t.sort,
         t.create_time,
         t.update_time,
         t.is_delete
@@ -42,6 +43,7 @@
         author,
         read_counts,
         tip_good,
+        sort,
         create_time,
         is_delete
         ) VALUES (
@@ -52,6 +54,7 @@
         #{author},
         #{readCounts},
         #{tipGood},
+        #{sort},
         #{createTime},
         #{isDelete}
         )
@@ -65,6 +68,7 @@
         author = #{author},
         read_counts = #{readCounts},
         tip_good = #{tipGood},
+        sort = #{sort},
         is_delete = #{isDelete}
         WHERE id = #{id}
     </update>
@@ -72,4 +76,12 @@
     <delete id="delete">
         UPDATE t_news SET delete_flag = 1 WHERE ID = #{id}
     </delete>
+
+    <!--extra-->
+
+    <select id="getNewsList" resultType="com.huanke.iot.base.po.News">
+        SELECT <include refid="tnewsColumns"/> FROM t_news t
+        WHERE is_delete = 0;
+        ORDER BY sort desc LIMIT #{beginNum}, #{length}
+    </select>
 </mapper>
