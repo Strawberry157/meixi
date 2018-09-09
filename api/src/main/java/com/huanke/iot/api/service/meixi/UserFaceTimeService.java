@@ -33,7 +33,9 @@ public class UserFaceTimeService extends CrudService<UserFaceTimeDao, UserFaceTi
         List<UserFaceTime> userFaceTimeList = dao.monthFaceLog(userId, queryDate);
         for (UserFaceTime userFaceTime : userFaceTimeList) {
             UserFaceTimeVo userFaceTimeVo = new UserFaceTimeVo();
-            userFaceTimeVo.set
+            userFaceTimeVo.setFaceDate(userFaceTime.getFaceTime());
+            userFaceTimeVoList.add(userFaceTimeVo);
         }
+        return userFaceTimeVoList;
     }
 }

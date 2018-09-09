@@ -8,6 +8,7 @@
         t.message_id,
         t.create_time,
         t.update_time,
+        t.is_read
         t.is_delete
     </sql>
 
@@ -35,12 +36,14 @@
         user_id,
         message_id,
         create_time,
+        is_read
         is_delete
         ) VALUES (
         #{id},
         #{userId},
         #{messageId},
         #{createTime},
+        #{isRead},
         #{isDelete}
         )
     </insert>
@@ -49,6 +52,7 @@
         UPDATE t_user_message SET
         user_id = #{userId},
         message_id = #{messageId},
+        is_read = #{isRead},
         is_delete = #{isDelete}
         WHERE id = #{id}
     </update>

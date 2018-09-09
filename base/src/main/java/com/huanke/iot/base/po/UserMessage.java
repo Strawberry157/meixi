@@ -16,4 +16,6 @@ public class UserMessage extends DataEntity {
     private Integer userId;
 
     private Integer messageId;
+
+    private Integer isRead;
 }
